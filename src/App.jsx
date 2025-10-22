@@ -107,7 +107,7 @@ function Home() {
           <div className="kawaii-hint">scroll ↓ for cute moments</div>
         </motion.header>
 
-        <Card title="1) My Action Items">
+        <Card title="1) Kitty's Action Items">
           <ul className="list">
             <li><span className="dot" />Improve emotional regulation: pause and communicate when I feel overwhelmed instead of shutting down.</li>
             <li><span className="dot" />Eliminate personal attacks or reactive comments. Focus on constructive communication.</li>
@@ -115,7 +115,7 @@ function Home() {
           </ul>
         </Card>
 
-        <Card title="2) Your Action Items">
+        <Card title="2) Gege's Action Items">
           <ul className="list">
             <li><span className="dot" />Maintain emotional safety: listen and validate before defending or problem-solving.</li>
             <li><span className="dot" />Remove double standards. If you wouldn’t want me doing something, don’t do it.</li>
@@ -160,7 +160,7 @@ function Home() {
         </motion.div>
 
         <footer className="foot">
-          <span>💗 Built with love & accountability • <span className="sig">— Your Kitty</span></span>
+          <span>💗 Made with bugs and love • <span className="sig">— Your Kitty</span></span>
         </footer>
       </div>
     </div>
