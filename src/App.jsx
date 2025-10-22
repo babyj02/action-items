@@ -2,11 +2,12 @@ import React, { useEffect, useRef } from "react";
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-/* brighter sparkle cursor (2 sparkles per move) */
+/* sparkle cursor (disabled on touch) */
 function useSparkleCursor() {
   useEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
+    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (prefersReduced || isTouch) return;
 
     const makeStar = (x, y) => {
       const s = document.createElement("span");
@@ -22,11 +23,10 @@ function useSparkleCursor() {
     let last = 0;
     const onMove = (e) => {
       const now = performance.now();
-      if (now - last < 20) return; // light throttle
+      if (now - last < 20) return;
       last = now;
       makeStar(e.clientX, e.clientY);
-      // a second sparkle slightly offset for visibility
-      makeStar(e.clientX + 6, e.clientY - 4);
+      makeStar(e.clientX + 8, e.clientY - 6);
     };
 
     window.addEventListener("mousemove", onMove);
@@ -34,7 +34,7 @@ function useSparkleCursor() {
   }, []);
 }
 
-/* click heart burst */
+/* heart burst */
 function heartBurst(x, y) {
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const n = prefersReduced ? 6 : 14;
@@ -52,7 +52,6 @@ function heartBurst(x, y) {
   }
 }
 
-/* section card */
 const Card = ({ title, children, id }) => (
   <motion.section
     id={id}
@@ -67,7 +66,6 @@ const Card = ({ title, children, id }) => (
   </motion.section>
 );
 
-/* ---------- HOME PAGE ---------- */
 function Home() {
   useSparkleCursor();
   const heroRef = useRef(null);
@@ -83,11 +81,8 @@ function Home() {
 
   return (
     <div className="page">
-      {/* background ribbons */}
       <motion.div className="ribbon r1" style={{ y: y1 }} />
       <motion.div className="ribbon r2" style={{ y: y2 }} />
-
-      {/* note: removed corner gifs per your request */}
 
       <div className="shell">
         <motion.header
@@ -98,21 +93,14 @@ function Home() {
           transition={{ duration: 0.7 }}
         >
           <div className="badge">For my Gege • from your Kitty 🐱</div>
-          <h1 className="title-strong">Action Items</h1>
+          <div className="title-plate">
+            <h1 className="title-strong">Action Items</h1>
+          </div>
           <p className="subtitle">
             Goal: Align on behaviors and expectations that create a healthy, emotionally safe, and respectful relationship for both of us.
           </p>
 
           <div className="hero-actions">
-            <button
-              className="btn"
-              onClick={(e) => {
-                heartBurst(e.clientX, e.clientY);
-                window.print();
-              }}
-            >
-              Print / Save PDF
-            </button>
             <a className="btn ghost" href="#success">Jump to Success Criteria</a>
           </div>
 
@@ -140,9 +128,7 @@ function Home() {
           <div className="table-wrap">
             <table className="table">
               <thead>
-                <tr>
-                  <th>Category</th><th>Action</th><th>Frequency</th><th>Owner</th>
-                </tr>
+                <tr><th>Category</th><th>Action</th><th>Frequency</th><th>Owner</th></tr>
               </thead>
               <tbody>
                 <tr><td>Check-ins</td><td>15-minute weekly sync for emotional & physical health of relationship</td><td>Weekly</td><td>Both</td></tr>
@@ -162,7 +148,6 @@ function Home() {
           </ul>
         </Card>
 
-        {/* sticky agree bar */}
         <motion.div
           className="agree"
           initial={{ y: 80, opacity: 0 }}
@@ -182,7 +167,6 @@ function Home() {
   );
 }
 
-/* ---------- LOVE PAGE ---------- */
 function Love() {
   useSparkleCursor();
   return (
@@ -190,24 +174,20 @@ function Love() {
       <div className="love-card">
         <h1 className="love-title">我爱你，哥哥 💗</h1>
         <p className="love-sub">
-          From your Kitty: thanks for choosing growth, listening, and respect. <br />
+          From your Kitty: thanks for choosing growth, listening, and respect.<br />
           yyds gege — 我们一起加油，好吗？
         </p>
-
-        {/* keep only the main gif */}
         <img
           className="love-gif"
           alt="cute love gif"
           src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
         />
-
         <Link to="/" className="btn back">返回主页 • Back to Home</Link>
       </div>
     </div>
   );
 }
 
-/* ---------- ROUTES ---------- */
 export default function App() {
   return (
     <Routes>
